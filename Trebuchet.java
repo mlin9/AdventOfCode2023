@@ -5,8 +5,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class Trebuchet {
     public static void main(String[] args) throws URISyntaxException, IOException {
@@ -15,14 +17,16 @@ public class Trebuchet {
     }
 
     public static void sumPartOne() throws IOException {
-        Path path1 = Paths.get("C:/Users/Michelle Lin/Projects/Java/AdventOfCode/input_day1");
+        File file = new File("input_day1");
+        Path path1 = Paths.get(file.getAbsolutePath());
         List<String> lines1 = Files.readAllLines(path1, StandardCharsets.UTF_8);
         String[] document1 = (String[]) lines1.toArray(new String[lines1.size()]);
         System.out.println(sumDigits(document1));
     }
 
     public static void sumPartTwo() throws IOException {
-        Path path2 = Paths.get("C:/Users/Michelle Lin/Projects/Java/AdventOfCode/input_day1");
+        File file = new File("input_day1");
+        Path path2 = Paths.get(file.getAbsolutePath());
         List<String> lines2 = Files.readAllLines(path2, StandardCharsets.UTF_8);
         String[] document2 = (String[]) lines2.toArray(new String[lines2.size()]);
         System.out.println(sumMatches(document2));
