@@ -8,7 +8,6 @@ import java.nio.file.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 public class Day1 {
     public static void main(String[] args) throws URISyntaxException, IOException {
