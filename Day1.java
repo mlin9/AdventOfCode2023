@@ -17,7 +17,7 @@ public class Day1 {
     }
 
     public static void sumPartOne() throws IOException {
-        File file = new File("Day1Input");
+        File file = new File("Day1.txt");
         Path path1 = Paths.get(file.getAbsolutePath());
         List<String> lines1 = Files.readAllLines(path1, StandardCharsets.UTF_8);
         String[] document1 = (String[]) lines1.toArray(new String[lines1.size()]);
@@ -25,7 +25,7 @@ public class Day1 {
     }
 
     public static void sumPartTwo() throws IOException {
-        File file = new File("Day1Input");
+        File file = new File("Day1.txt");
         Path path2 = Paths.get(file.getAbsolutePath());
         List<String> lines2 = Files.readAllLines(path2, StandardCharsets.UTF_8);
         String[] document2 = (String[]) lines2.toArray(new String[lines2.size()]);
