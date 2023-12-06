@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,9 +17,6 @@ public class Day2 {
     private final static String REGEX_CUBES = "\\d+((red)|(green)|(blue))";
     private final static String REGEX_COLOR = "(red)|(green)|(blue)";
     private final static String REGEX_INT = "\\d+";
-    private final static int RED = 0;
-    private final static int GREEN = 1;
-    private final static int BLUE = 2;
 
     public static void main(String[] args) throws IOException {
         printPartOne();
@@ -28,53 +27,45 @@ public class Day2 {
         Path path = Paths.get(file.getAbsolutePath());
         List<String> list = Files.readAllLines(path, StandardCharsets.UTF_8);
         String[] strings = (String[]) list.toArray(new String[list.size()]);
-        int[] bag = { 12, 13, 14 };
+        Map<String, Integer> bag = new HashMap<>();
+        bag.put("red", 12);
+        bag.put("green", 13);
+        bag.put("blue", 14);
         System.out.println(sumPartOne(strings, bag));
     }
 
-    static int sumPartOne(String[] document, int[] bag) {
+    static int sumPartOne(String[] document, Map<String, Integer> bag) {
         int sum = 0;
-        for (int row = 0; row < document.length; row++) {
+        for (int i = 0; i < document.length; i++) {
             boolean hasCapacity = true;
-            String[] sets = document[row].trim().toLowerCase().split(";");
-            for (String set : sets) {
-                String[] subsets = set.replaceAll("\\s", "").split(",");
-                for (String subset : subsets) {
-                    Matcher cubeMatcher = Pattern.compile(REGEX_CUBES).matcher(subset);
-                    ArrayList<String> cubeMatches = new ArrayList<>();
-                    while (cubeMatcher.find()) {
-                        cubeMatches.add(cubeMatcher.group());
-                    }
-
-                    for (String cubeString : cubeMatches) {
-                        if (hasCapacity) {
-                            Matcher intMatcher = Pattern.compile(REGEX_INT).matcher(cubeString);
-                            Matcher colorMatcher = Pattern.compile(REGEX_COLOR).matcher(cubeString);
-                            intMatcher.find();
-                            colorMatcher.find();
-                            int count = Integer.parseInt(intMatcher.group());
-                            String color = colorMatcher.group();
-                            switch (color) {
-                                case "red":
-                                    hasCapacity = bag[RED] >= count;
-                                    break;
-                                case "green":
-                                    hasCapacity = bag[GREEN] >= count;
-                                    break;
-                                case "blue":
-                                    hasCapacity = bag[BLUE] >= count;
-                                    break;
-                            }
-                        }
+            for (String set : document[i].trim().toLowerCase().split(";")) {
+                for (String subset : set.replaceAll("\\s", "").split(",")) {
+                    String[] cubeCounts = regexAll(subset, REGEX_CUBES);
+                    for (int j = 0; j < cubeCounts.length && hasCapacity; j++) {
+                        hasCapacity = bag.get(regex(cubeCounts[j], REGEX_COLOR)) >= Integer
+                                .parseInt(regex(cubeCounts[j], REGEX_INT));
                     }
                 }
             }
-
-            if (hasCapacity) {
-                sum += row + 1;
-            }
+            sum = sum + (hasCapacity ? i + 1 : 0);
         }
-
         return sum;
+    }
+
+    public static String[] regexAll(String input, String pattern) {
+        ArrayList<String> matches = new ArrayList<>();
+        Matcher matcher = Pattern.compile(pattern).matcher(input);
+        while (matcher.find()) {
+            matches.add(matcher.group());
+        }
+        return matches.toArray(new String[matches.size()]);
+    }
+
+    public static String regex(String input, String pattern) {
+        Matcher matcher = Pattern.compile(pattern).matcher(input);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
     }
 }
