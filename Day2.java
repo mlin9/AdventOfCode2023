@@ -17,10 +17,10 @@ public class Day2 {
     private final static String REGEX_INT = "\\d+";
 
     public static void main(String[] args) throws IOException {
-        printPartOne();
+        printSums();
     }
 
-    static void printPartOne() throws IOException {
+    static void printSums() throws IOException {
         List<String> list = Files.readAllLines(Paths.get((new File("Day2.txt")).getAbsolutePath()),
                 StandardCharsets.UTF_8);
         String[] strings = (String[]) list.toArray(new String[list.size()]);
